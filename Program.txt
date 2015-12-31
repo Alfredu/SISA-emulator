@@ -1,0 +1,2 @@
+MOVHI R1, -2
+OUT 1, R1
