@@ -11,7 +11,24 @@
 
 using namespace std;
 
-int16_t translateToMachineCode(string *linia){
+	static const bitset<4> AL = bitset<4>(string("0000"));
+	const bitset<4> CMP = bitset<4>(string("0001"));
+	const bitset<4> ADDI = bitset<4>(string("0010"));
+	const bitset<4> LD = bitset<4>(string("0011"));
+	const bitset<4> ST = bitset<4>(string("0100"));
+	const bitset<4> LDB = bitset<4>(string("0101"));
+	const bitset<4> STB = bitset<4>(string("0110"));
+	const bitset<4> JALR = bitset<4>(string("0111"));
+	const bitset<4> BZ = bitset<4>(string("1000"));
+	const bitset<4> BNZ = bitset<4>(string("1000"));
+	const bitset<4> MOVI = bitset<4>(string("1001"));
+	const bitset<4> MOVHI = bitset<4>(string("1001"));
+	const bitset<4> IN = bitset<4>(string("1010"));
+	const bitset<4> OUT = bitset<4>(string("1010"));
+
+
+
+bitset<16> translateToMachineCode(string *linia){
 	string opcode;
 	string instruccio;
     instruccio.append(*linia);
@@ -653,42 +670,100 @@ int16_t translateToMachineCode(string *linia){
 	}
 
 
-
-
-
-
-
-
-
     bitset<16> x(opcode);
-
-    cout<<opcode<<endl;
-    return x.to_ulong();
+    return x;
 }
 
 
 void parseCode(int16_t *PC, int8_t Ram[]){
 	ifstream codi;
 	ofstream codimaquina;
+	bitset<16> opCode;
 
 	codimaquina.open("ProgramMachineCode.txt");
 	codi.open("Program.txt");
 	string linia;
-	int opCode;
+	
 
 	while(getline(codi,linia)){
 		opCode = translateToMachineCode(&linia);
-		codimaquina <<bitset<16>(opCode)<<endl;	
+		codimaquina <<opCode<<endl;
+
 	}
 
 }
 
+void executeInstruction(string linia){
+	string instruccio;
+	for(int i=0;i<4;i++){
+		instruccio+=linia[i];
+	}
+	cout<<instruccio<<endl;
+
+	if(instruccio==AL.to_string()){
+		
+
+	}
+	else if(instruccio==CMP.to_string()){
+
+	}
+
+	else if(instruccio==ADDI.to_string()){
+
+	}
+
+	else if(instruccio==LD.to_string()){
+
+	}
+	else if(instruccio==ST.to_string()){
+
+	}
+	else if(instruccio==LDB.to_string()){
+
+	}
+	else if(instruccio==STB.to_string()){
+
+	}
+	else if(instruccio==JALR.to_string()){
+
+	}
+	else if(instruccio==BZ.to_string()||instruccio==BNZ.to_string()){
+
+	}
+	else if(instruccio==MOVI.to_string()||instruccio==MOVHI.to_string()){
+
+	}
+	else if(instruccio==IN.to_string()||instruccio==OUT.to_string()){
+
+	}
+
+
+
+}
+
+void parseBinaryFile(){
+	ifstream binaryCode;
+
+	binaryCode.open("ProgramMachineCode.txt");
+	string linia;
+
+	while(getline(binaryCode,linia)){
+		executeInstruction(linia);
+	}
+}
+
+
+
 
 int main(){
+	string fitxerCodiFont;
+	string fitxerCodiCompilat;
+
 	int8_t Ram[65536];
 	int16_t Registers[8]={0};
 	int16_t PC=0;
 
 	
 	parseCode(&PC,Ram);
+	parseBinaryFile();
 }
