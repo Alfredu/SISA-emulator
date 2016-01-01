@@ -6,6 +6,7 @@
 #include<bitset>
 #include<stdlib.h>
 #include<iomanip>
+#include<cmath>
 //#include"stringManipulation.hpp"
 //#include<stdint.h>
 
@@ -849,6 +850,32 @@ void executeInstruction(string linia){
 
 
 		}
+		else if(funcio==SHA.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = (int16_t) 2 * pow((double)powRegisters[regFont],(double)Registers [regFont2]);
+
+			cout<<Registers[regDestino];
+
+
+		}
+
 			
 
 	}
