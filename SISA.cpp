@@ -26,7 +26,19 @@ using namespace std;
 	const bitset<4> IN = bitset<4>(string("1010"));
 	const bitset<4> OUT = bitset<4>(string("1010"));
 
+	const bitset<3> AND = bitset<3>(string("000"));
+	const bitset<3> OR = bitset<3>(string("001"));
+	const bitset<3> XOR = bitset<3>(string("010"));
+	const bitset<3> NOT = bitset<3>(string("011"));
+	const bitset<3> ADD = bitset<3>(string("100"));
+	const bitset<3> SUB = bitset<3>(string("101"));
+	const bitset<3> SHA = bitset<3>(string("110"));
+	const bitset<3> SHL = bitset<3>(string("111"));
 
+
+	int8_t Ram[65536];
+	int16_t Registers[8]={0};
+	int16_t PC=0;	
 
 bitset<16> translateToMachineCode(string *linia){
 	string opcode;
@@ -701,7 +713,143 @@ void executeInstruction(string linia){
 	cout<<instruccio<<endl;
 
 	if(instruccio==AL.to_string()){
-		
+		string funcio;
+		for(int i=13;i<16;i++){
+			funcio+=linia[i];
+		}
+
+		if(funcio==AND.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+			Registers[regDestino] = Registers[regFont] & Registers [regFont2];
+
+		}
+
+		if(funcio==OR.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+			Registers[regDestino] = Registers[regFont] | Registers [regFont2];
+
+		}
+
+		if(funcio==XOR.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+			Registers[regDestino] = Registers[regFont] ^ Registers [regFont2];
+
+		}
+
+		if(funcio==NOT.to_string()){
+			unsigned long regFont, regDestino = 0;
+
+			string sRegFont, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+			Registers[regDestino] = ~	Registers[regFont];
+		}
+
+
+		if(funcio==ADD.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = Registers[regFont] + Registers [regFont2];
+
+		}
+		else if(funcio==SUB.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = Registers[regFont] - Registers [regFont2];
+
+			cout<<Registers[regDestino];
+
+
+		}
+			
 
 	}
 	else if(instruccio==CMP.to_string()){
@@ -758,11 +906,6 @@ void parseBinaryFile(){
 int main(){
 	string fitxerCodiFont;
 	string fitxerCodiCompilat;
-
-	int8_t Ram[65536];
-	int16_t Registers[8]={0};
-	int16_t PC=0;
-
 	
 	parseCode(&PC,Ram);
 	parseBinaryFile();
