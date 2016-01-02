@@ -241,30 +241,28 @@ bitset<16> translateToMachineCode(string *linia){
 
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<6>(instruccio[14]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
-			opcode.append(immediat.to_string());
+	    	immediatShort = -(instruccio[14]-'0');
+	    	int i=15;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 	    }
 
 	    else{
 
-	    	bitset<6> immediat = bitset<6>(instruccio[13]-'0');
+	    	immediatShort = instruccio[13]-'0';
+	    	int i=14;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 
 	    }
+	    opcode.append(immediat.to_string());
+
 	}
 
 	else if(tokens[0]=="LD"){
@@ -283,27 +281,24 @@ bitset<16> translateToMachineCode(string *linia){
 
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<6>(instruccio[8]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[8]-'0');
+	    	int i=9;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 	    }
 
 	    else{
+	    	immediatShort = instruccio[7]-'0';
+	    	int i=8;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 
-	    	immediat = bitset<6>(instruccio[7]-'0');
 
 	    }
 
@@ -328,27 +323,23 @@ bitset<16> translateToMachineCode(string *linia){
 
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<6>(instruccio[4]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[4]-'0');
+	    	int i=5;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 	    }
 
 	    else{
-
-	    	immediat = bitset<6>(instruccio[3]-'0');
+	    	immediatShort = instruccio[3]-'0';
+	    	int i=4;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 
 	    }
 
@@ -371,27 +362,24 @@ bitset<16> translateToMachineCode(string *linia){
 
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<6>(instruccio[9]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[13]-'0');
+	    	int i=14;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 	    }
 
 	    else{
 
-	    	immediat = bitset<6>(instruccio[8]-'0');
+	    	immediatShort = instruccio[8]-'0';
+	    	int i=9;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 
 	    }
 
@@ -416,27 +404,23 @@ bitset<16> translateToMachineCode(string *linia){
 
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<6>(instruccio[5]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[5]-'0');
+	    	int i=6;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 	    }
 
 	    else{
-
-	    	immediat = bitset<6>(instruccio[4]-'0');
+	    	immediatShort = instruccio[4]-'0';
+	    	int i=5;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<6>(immediatShort);
 
 	    }
 
@@ -464,22 +448,7 @@ bitset<16> translateToMachineCode(string *linia){
 
 		if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<8>(instruccio[8]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediat = bitset<8>(-(instruccio[8]-'0'));
 	    }
 
 	    else{
@@ -501,27 +470,23 @@ bitset<16> translateToMachineCode(string *linia){
 
 		if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<8>(instruccio[9]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
-	    }
+	    	immediatShort = -(instruccio[9]-'0');
+	    	int i=10;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);	    }
 
 	    else{
 
-	    	immediat = bitset<8>(instruccio[8]-'0');
+	    	immediatShort = instruccio[8]-'0';
+	    	int i=9;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 
 	    }
 
@@ -538,34 +503,24 @@ bitset<16> translateToMachineCode(string *linia){
 
 		if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<8>(instruccio[10]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[10]-'0');
+	    	int i=11;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 	    }
 
 	    else{
 
-	    	/*immediat = bitset<8>(instruccio[9]-'0');
+	    	immediatShort = instruccio[9]-'0';
 	    	int i=10;
 	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
-	    		immediat = instruccio[i]*pow(10,i-9);
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
 	    		i++;
 	    	}
-	    	cout<<immediat<<endl;*/ // THIS IS WRONG AT SO MANY LEVELS 
-
+	    	immediat = bitset<8>(immediatShort);
 	    }
 
 	    opcode.append(immediat.to_string());
@@ -581,29 +536,28 @@ bitset<16> translateToMachineCode(string *linia){
 
 		if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<8>(instruccio[11]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[11]-'0');
+	    	int i=12;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
+	    	
 	    }
 
 	    else{
 
-	    	immediat = bitset<8>(instruccio[10]-'0');
-
+			immediatShort = instruccio[10]-'0';
+	    	int i=11;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 	    }
+
+	    cout<<immediat<<endl;
 
 	    opcode.append(immediat.to_string());
 	}
@@ -618,27 +572,24 @@ bitset<16> translateToMachineCode(string *linia){
 
 		if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<8>(instruccio[8]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[8]-'0');
+	    	int i=9;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 	    }
 
 	    else{
 
-	    	immediat = bitset<8>(instruccio[7]-'0');
+	    	immediatShort = instruccio[7]-'0';
+	    	int i=8;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 
 	    }
 
@@ -661,27 +612,23 @@ bitset<16> translateToMachineCode(string *linia){
 
 		if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
-	    	immediat = bitset<8>(instruccio[5]-'0');
-	    	immediat.flip();// Invertim el numero
-			if(immediat[0]==0)//Sumem 1 i contem els carrys.
-				immediat[0]=1;
-			else if(immediat[0]==1){
-				immediat[0]=0;
-				for(int i=1;i<8;i++){
-					if(immediat[i]==0){
-						immediat[i]=1;
-						break;
-					}
-
-					else if(immediat[i]==1)
-						immediat[i]=0;
-				}
-			}
+	    	immediatShort = -(instruccio[5]-'0');
+	    	int i=6;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) - (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 	    }
 
 	    else{
-
-	    	immediat = bitset<8>(instruccio[4]-'0');
+	    	immediatShort = instruccio[4]-'0';
+	    	int i=5;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
+	    		i++;
+	    	}
+	    	immediat = bitset<8>(immediatShort);
 
 	    }
 
@@ -1089,6 +1036,6 @@ int main(){
 	parseBinaryFile();
 
 	for(int i=0;i<8;i++){
-		cout<<"R"<<i<<": "<<Registers[i]<<endl;
+		cout<<"R"<<i<<": "<<hex<<Registers[i]<<endl;
 	}
 }
