@@ -558,7 +558,13 @@ bitset<16> translateToMachineCode(string *linia){
 
 	    else{
 
-	    	immediat = bitset<8>(instruccio[9]-'0');
+	    	/*immediat = bitset<8>(instruccio[9]-'0');
+	    	int i=10;
+	    	while(instruccio[i]>='0' && instruccio [i]<='9'){
+	    		immediat = instruccio[i]*pow(10,i-9);
+	    		i++;
+	    	}
+	    	cout<<immediat<<endl;*/ // THIS IS WRONG AT SO MANY LEVELS 
 
 	    }
 
@@ -738,7 +744,6 @@ void executeInstruction(string linia){
 			regFont2 = bitset<3>(sRegFont2).to_ulong();
 			regDestino = bitset<3>(sRegDestino).to_ulong();
 			Registers[regDestino] = Registers[regFont] & Registers [regFont2];
-
 		}
 
 		if(funcio==OR.to_string()){
@@ -823,7 +828,6 @@ void executeInstruction(string linia){
 			regDestino = bitset<3>(sRegDestino).to_ulong();
 
 			Registers[regDestino] = Registers[regFont] + Registers [regFont2];
-
 		}
 		else if(funcio==SUB.to_string()){
 			unsigned long regFont, regFont2, regDestino = 0;
@@ -1005,8 +1009,6 @@ void executeInstruction(string linia){
 			bitset16.append(N);
 			bitset16.append(bitset<8>(Registers[regFont]).to_string());
 
-			cout<<bitset16<<endl;
-
 			bitsDestino = bitset<16>(bitset16);
 
 
@@ -1022,13 +1024,38 @@ void executeInstruction(string linia){
 
 			Registers[regFont]=exponent;
 
-			cout<<exponent<<endl;
-
 
 		}
 
 		else{
+			string N;
+			string bitset16;
 
+			for(int i=8;i<16;i++){
+				N+=linia[i];
+			}
+			if(N[0]=='0'){
+				bitset16.append("00000000");
+				bitset16.append(N);
+			}
+			else{
+				bitset16.append("11111111");
+				bitset16.append(N);
+			}
+			bitsDestino = bitset<16>(bitset16);
+
+
+			for(int i=0;i<16;i++){
+				if(i==15){
+					exponent = exponent - bitsDestino[i]*pow(2,i);
+				}
+				else if(i!=15){
+					exponent = exponent + bitsDestino[i]*pow(2,i);
+				}
+
+			}
+
+			Registers[regFont]=exponent;
 		}
 
 	}
@@ -1060,4 +1087,8 @@ int main(){
 	
 	parseCode(&PC,Ram);
 	parseBinaryFile();
+
+	for(int i=0;i<8;i++){
+		cout<<"R"<<i<<": "<<Registers[i]<<endl;
+	}
 }
