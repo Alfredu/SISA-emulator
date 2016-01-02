@@ -867,16 +867,88 @@ void executeInstruction(string linia){
 
 			regFont = bitset<3>(sRegFont).to_ulong();
 			regFont2 = bitset<3>(sRegFont2).to_ulong();
+
+			int16_t baseFont = Registers[regFont];
+			bitset<5> baseExponent = bitset<5>(Registers[regFont2]);
+			short int exponent=0;
+			cout<<baseExponent<<endl;
+			for(int i=0;i<5;i++){
+				if(i==4){
+					exponent = exponent - baseExponent[i]*pow(2,i);
+					cout<<exponent<<endl;
+				}
+				else if(i!=4){
+					exponent = exponent + baseExponent[i]*pow(2,i);
+					cout<<exponent<<endl;
+				}
+
+			}
+
 			regDestino = bitset<3>(sRegDestino).to_ulong();
 
-			Registers[regDestino] = (int16_t) 2 * pow((double)powRegisters[regFont],(double)Registers [regFont2]);
+			if(exponent>=0){
+				baseFont >>= exponent;
+				Registers[regDestino] = baseFont;
+			}
+			else{
+				short int exponentAbs = abs(exponent);
+				baseFont <<= exponentAbs;
+				Registers[regDestino] = baseFont;
 
-			cout<<Registers[regDestino];
+			}
 
-
+			cout<<Registers[regDestino]<<endl;
 		}
 
-			
+		else if(funcio==SHL.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+
+			uint16_t baseFont = Registers[regFont];
+			bitset<5> baseExponent = bitset<5>(Registers[regFont2]);
+			short int exponent=0;
+			cout<<baseExponent<<endl;
+			for(int i=0;i<5;i++){
+				if(i==4){
+					exponent = exponent - baseExponent[i]*pow(2,i);
+					cout<<exponent<<endl;
+				}
+				else if(i!=4){
+					exponent = exponent + baseExponent[i]*pow(2,i);
+					cout<<exponent<<endl;
+				}
+
+			}
+
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			if(exponent>=0){
+				baseFont <<= exponent;
+
+				Registers[regDestino]=baseFont;
+			}
+			else{
+				short int exponentAbs = abs(exponent);
+				baseFont <<= exponentAbs;
+				Registers[regDestino] = baseFont;
+			}
+		}
+
+
 
 	}
 	else if(instruccio==CMP.to_string()){
@@ -906,6 +978,58 @@ void executeInstruction(string linia){
 
 	}
 	else if(instruccio==MOVI.to_string()||instruccio==MOVHI.to_string()){
+		unsigned long regFont, regFont2, regDestino = 0;
+
+		string sRegFont, sRegFont2, sRegDestino;
+
+		for(int i=4;i<7;i++){
+			sRegFont +=linia[i];
+		}
+		
+
+		regFont = bitset<3>(sRegFont).to_ulong();
+
+		string movhi;
+		movhi += linia[7];
+		bitset<16> bitsDestino;
+		int16_t exponent;
+
+		if(movhi=="1"){
+			string N;
+			string bitset16;
+
+			for(int i=8;i<16;i++){
+				N+=linia[i];
+			}
+
+			bitset16.append(N);
+			bitset16.append(bitset<8>(Registers[regFont]).to_string());
+
+			cout<<bitset16<<endl;
+
+			bitsDestino = bitset<16>(bitset16);
+
+
+			for(int i=0;i<16;i++){
+				if(i==15){
+					exponent = exponent - bitsDestino[i]*pow(2,i);
+				}
+				else if(i!=15){
+					exponent = exponent + bitsDestino[i]*pow(2,i);
+				}
+
+			}
+
+			Registers[regFont]=exponent;
+
+			cout<<exponent<<endl;
+
+
+		}
+
+		else{
+
+		}
 
 	}
 	else if(instruccio==IN.to_string()||instruccio==OUT.to_string()){
