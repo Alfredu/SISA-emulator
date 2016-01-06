@@ -36,6 +36,12 @@ using namespace std;
 	const bitset<3> SHA = bitset<3>(string("110"));
 	const bitset<3> SHL = bitset<3>(string("111"));
 
+	const bitset<3> CMPLT = bitset<3>(string("000"));
+	const bitset<3> CMPLE = bitset<3>(string("001"));
+	const bitset<3> CMPEQ = bitset<3>(string("011"));
+	const bitset<3> CMPLTU = bitset<3>(string("100"));
+	const bitset<3> CMPLEU = bitset<3>(string("101"));
+
 
 	int8_t Ram[65536];
 	int16_t Registers[8]={0};
@@ -170,7 +176,7 @@ bitset<16> translateToMachineCode(string *linia){
   
     	opcode.append(bitset<3>(instruccio[11]-'0').to_string());
 
-    	opcode.append(bitset<3>(instruccio[14]-'0').to_string());
+    	opcode.append(bitset<3>(instruccio[15]-'0').to_string());
 
     	opcode.append(bitset<3>(instruccio[7]-'0').to_string());
 
@@ -184,7 +190,7 @@ bitset<16> translateToMachineCode(string *linia){
   
     	opcode.append(bitset<3>(instruccio[11]-'0').to_string());
 
-    	opcode.append(bitset<3>(instruccio[14]-'0').to_string());
+    	opcode.append(bitset<3>(instruccio[15]-'0').to_string());
 
     	opcode.append(bitset<3>(instruccio[7]-'0').to_string());
 
@@ -196,7 +202,7 @@ bitset<16> translateToMachineCode(string *linia){
   
     	opcode.append(bitset<3>(instruccio[11]-'0').to_string());
 
-    	opcode.append(bitset<3>(instruccio[14]-'0').to_string());
+    	opcode.append(bitset<3>(instruccio[15]-'0').to_string());
 
     	opcode.append(bitset<3>(instruccio[7]-'0').to_string());
 
@@ -208,7 +214,7 @@ bitset<16> translateToMachineCode(string *linia){
   
     	opcode.append(bitset<3>(instruccio[12]-'0').to_string());
 
-    	opcode.append(bitset<3>(instruccio[15]-'0').to_string());
+    	opcode.append(bitset<3>(instruccio[16]-'0').to_string());
 
     	opcode.append(bitset<3>(instruccio[8]-'0').to_string());
 
@@ -220,7 +226,7 @@ bitset<16> translateToMachineCode(string *linia){
   
     	opcode.append(bitset<3>(instruccio[12]-'0').to_string());
 
-    	opcode.append(bitset<3>(instruccio[15]-'0').to_string());
+    	opcode.append(bitset<3>(instruccio[16]-'0').to_string());
 
     	opcode.append(bitset<3>(instruccio[8]-'0').to_string());
 
@@ -557,8 +563,6 @@ bitset<16> translateToMachineCode(string *linia){
 	    	immediat = bitset<8>(immediatShort);
 	    }
 
-	    cout<<immediat<<endl;
-
 	    opcode.append(immediat.to_string());
 	}
 
@@ -664,7 +668,6 @@ void executeInstruction(string linia){
 	for(int i=0;i<4;i++){
 		instruccio+=linia[i];
 	}
-	cout<<instruccio<<endl;
 
 	if(instruccio==AL.to_string()){
 		string funcio;
@@ -797,9 +800,6 @@ void executeInstruction(string linia){
 
 			Registers[regDestino] = Registers[regFont] - Registers [regFont2];
 
-			cout<<Registers[regDestino];
-
-
 		}
 		else if(funcio==SHA.to_string()){
 			unsigned long regFont, regFont2, regDestino = 0;
@@ -822,15 +822,12 @@ void executeInstruction(string linia){
 			int16_t baseFont = Registers[regFont];
 			bitset<5> baseExponent = bitset<5>(Registers[regFont2]);
 			short int exponent=0;
-			cout<<baseExponent<<endl;
 			for(int i=0;i<5;i++){
 				if(i==4){
 					exponent = exponent - baseExponent[i]*pow(2,i);
-					cout<<exponent<<endl;
 				}
 				else if(i!=4){
 					exponent = exponent + baseExponent[i]*pow(2,i);
-					cout<<exponent<<endl;
 				}
 
 			}
@@ -847,8 +844,6 @@ void executeInstruction(string linia){
 				Registers[regDestino] = baseFont;
 
 			}
-
-			cout<<Registers[regDestino]<<endl;
 		}
 
 		else if(funcio==SHL.to_string()){
@@ -872,15 +867,12 @@ void executeInstruction(string linia){
 			uint16_t baseFont = Registers[regFont];
 			bitset<5> baseExponent = bitset<5>(Registers[regFont2]);
 			short int exponent=0;
-			cout<<baseExponent<<endl;
 			for(int i=0;i<5;i++){
 				if(i==4){
 					exponent = exponent - baseExponent[i]*pow(2,i);
-					cout<<exponent<<endl;
 				}
 				else if(i!=4){
 					exponent = exponent + baseExponent[i]*pow(2,i);
-					cout<<exponent<<endl;
 				}
 
 			}
@@ -903,11 +895,160 @@ void executeInstruction(string linia){
 
 	}
 	else if(instruccio==CMP.to_string()){
+		string funcio;
+		funcio+=linia[13];
+		funcio+=linia[14];
+		funcio+=linia[15];
 
+		if(funcio==CMPLT.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			cout<<linia<<endl;
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = Registers[regFont] < Registers[regFont2];
+		}
+
+		else if(funcio==CMPLE.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			cout<<linia<<endl;
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = Registers[regFont] <= Registers[regFont2];
+		}
+		else if(funcio==CMPEQ.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			cout<<linia<<endl;
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = Registers[regFont] == Registers[regFont2];
+		}
+		else if(funcio==CMPLTU.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			cout<<linia<<endl;
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = bitset<16>(Registers[regFont]).to_ulong() < bitset<16>(Registers[regFont2]).to_ulong();
+		}
+		else if(funcio==CMPLEU.to_string()){
+			unsigned long regFont, regFont2, regDestino = 0;
+
+			string sRegFont, sRegFont2, sRegDestino;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegFont2 +=linia[i];
+			}
+			for(int i=10;i<13;i++){
+				sRegDestino +=linia[i];
+			}
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regFont2 = bitset<3>(sRegFont2).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = bitset<16>(Registers[regFont]).to_ulong() <= bitset<16>(Registers[regFont2]).to_ulong();
+		}
 	}
 
 	else if(instruccio==ADDI.to_string()){
+		unsigned long regFont, regDestino = 0;
 
+			string sRegFont, sRegDestino, sImmediat;
+
+			for(int i=4;i<7;i++){
+				sRegFont +=linia[i];
+			}
+			for(int i=7;i<10;i++){
+				sRegDestino +=linia[i];
+			}
+			for(int i=10;i<16;i++){
+				sImmediat +=linia[i];
+			}
+
+			bitset<6> bitsImmediat = bitset<6>(sImmediat);
+			short int exponent=0;
+
+			for(int i=0;i<6;i++){
+				if(i==5){
+					exponent = exponent - (bitsImmediat[i] * pow(2,i));
+				}
+				else
+					exponent = exponent + (bitsImmediat[i] * pow(2,i));
+			}
+
+			cout<<exponent<<endl;
+
+
+			regFont = bitset<3>(sRegFont).to_ulong();
+			regDestino = bitset<3>(sRegDestino).to_ulong();
+
+			Registers[regDestino] = Registers[regFont] + exponent;
 	}
 
 	else if(instruccio==LD.to_string()){
@@ -928,10 +1069,11 @@ void executeInstruction(string linia){
 	else if(instruccio==BZ.to_string()||instruccio==BNZ.to_string()){
 
 	}
-	else if(instruccio==MOVI.to_string()||instruccio==MOVHI.to_string()){
-		unsigned long regFont, regFont2, regDestino = 0;
+	else if(instruccio==MOVI.to_string() || instruccio==MOVHI.to_string()){
 
-		string sRegFont, sRegFont2, sRegDestino;
+		unsigned long regFont = 0;
+
+		string sRegFont;
 
 		for(int i=4;i<7;i++){
 			sRegFont +=linia[i];
@@ -957,13 +1099,13 @@ void executeInstruction(string linia){
 			bitset16.append(bitset<8>(Registers[regFont]).to_string());
 
 			bitsDestino = bitset<16>(bitset16);
-
+			exponent = 0;
 
 			for(int i=0;i<16;i++){
 				if(i==15){
 					exponent = exponent - bitsDestino[i]*pow(2,i);
 				}
-				else if(i!=15){
+				else{
 					exponent = exponent + bitsDestino[i]*pow(2,i);
 				}
 
@@ -991,6 +1133,7 @@ void executeInstruction(string linia){
 			}
 			bitsDestino = bitset<16>(bitset16);
 
+			exponent=0;
 
 			for(int i=0;i<16;i++){
 				if(i==15){
@@ -1001,8 +1144,7 @@ void executeInstruction(string linia){
 				}
 
 			}
-
-			Registers[regFont]=exponent;
+			Registers[regFont]=exponent;	
 		}
 
 	}
@@ -1036,6 +1178,8 @@ int main(){
 	parseBinaryFile();
 
 	for(int i=0;i<8;i++){
-		cout<<"R"<<i<<": "<<hex<<Registers[i]<<endl;
+		cout<<"R"<<i<<": "<<Registers[i]<<endl;
 	}
 }
+
+//TODO ADDI
