@@ -276,15 +276,6 @@ bitset<16> translateToMachineCode(string *linia){
 		bitset<6> immediat = bitset<6>(instruccio[7]);
 	    short int immediatShort = immediat.to_ulong();
 
-  		if(immediatShort==45)
-    		opcode.append(bitset<3>(instruccio[11]-'0').to_string());
-
-    	else
-    		opcode.append(bitset<3>(instruccio[10]-'0').to_string());
-
-
-    	opcode.append(bitset<3>(instruccio[4]-'0').to_string());
-
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
 	    	immediatShort = -(instruccio[8]-'0');
@@ -294,6 +285,8 @@ bitset<16> translateToMachineCode(string *linia){
 	    		i++;
 	    	}
 	    	immediat = bitset<6>(immediatShort);
+    		opcode.append(bitset<3>(instruccio[i+2]-'0').to_string());
+
 	    }
 
 	    else{
@@ -303,11 +296,14 @@ bitset<16> translateToMachineCode(string *linia){
 	    		immediatShort =  (immediatShort)*pow(10,1) + (instruccio[i]-'0');
 	    		i++;
 	    	}
+
+
+    		opcode.append(bitset<3>(instruccio[i+2]-'0').to_string());
 	    	immediat = bitset<6>(immediatShort);
 
 
 	    }
-
+		opcode.append(bitset<3>(instruccio[4]-'0').to_string());
 	    opcode.append(immediat.to_string());
 	}
 
@@ -357,15 +353,6 @@ bitset<16> translateToMachineCode(string *linia){
 		bitset<6> immediat = bitset<6>(instruccio[8]);
 	    short int immediatShort = immediat.to_ulong();
 
-  		if(immediatShort==45)
-    		opcode.append(bitset<3>(instruccio[12]-'0').to_string());
-
-    	else
-    		opcode.append(bitset<3>(instruccio[11]-'0').to_string());
-
-
-    	opcode.append(bitset<3>(instruccio[5]-'0').to_string());
-
 	    if(immediatShort==45){//IF es un numero negatiu, parsejarà el guió en comptes del número. Convertim el numero a negatiu en complement a dos.
 
 	    	immediatShort = -(instruccio[13]-'0');
@@ -375,6 +362,8 @@ bitset<16> translateToMachineCode(string *linia){
 	    		i++;
 	    	}
 	    	immediat = bitset<6>(immediatShort);
+	    	opcode.append(bitset<3>(instruccio[i+2]-'0').to_string());
+
 	    }
 
 	    else{
@@ -386,9 +375,11 @@ bitset<16> translateToMachineCode(string *linia){
 	    		i++;
 	    	}
 	    	immediat = bitset<6>(immediatShort);
+	    	opcode.append(bitset<3>(instruccio[i+2]-'0').to_string());
+
 
 	    }
-
+    	opcode.append(bitset<3>(instruccio[5]-'0').to_string());
 	    opcode.append(immediat.to_string());
 	}
 
@@ -1052,6 +1043,42 @@ void executeInstruction(string linia){
 	}
 
 	else if(instruccio==LD.to_string()){
+		string sRegFont, sRegDestino, sDesplasament;
+
+		 for(int i=4;i<7;i++){
+		 	sRegFont += linia[i];
+		 }
+
+		 for(int i=7;i<10;i++){
+		 	sRegDestino+= linia[i];
+		 }
+
+		 for(int i=10;i<16;i++){
+		 	sDesplasament += linia[i];
+		 }
+		bitset<3> regFont = bitset<3>(sRegFont);
+		bitset<3> regDestino = bitset<3>(sRegDestino);
+		bitset<6> desplasament = bitset<6>(sDesplasament);
+
+		unsigned int u_regFont, u_regDestino;
+
+		u_regFont = regFont.to_ulong();
+		u_regDestino = regDestino.to_ulong();
+
+		short int n_desplasament=0;
+
+		for(int i=0;i<6;i++){
+			if(i==5)
+				n_desplasament = n_desplasament - (desplasament[i] * pow(2,i));
+			else
+				n_desplasament = n_desplasament + (desplasament[i] * pow(2,i));
+		}
+
+		bitset<16> bAdresa = Registers[u_regFont] + n_desplasament;
+
+		bAdresa &= ~1;
+
+		cout<<bAdresa<<endl;
 
 	}
 	else if(instruccio==ST.to_string()){
